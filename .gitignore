@@ -1,0 +1,30 @@
+# すべてのファイルを無視
+*
+
+# 特定のファイルを無視から除外
+!**/*.cpp
+!**/*.hpp
+!**/*.tpp
+!**/*.ipp
+!**/*.gnu
+!**/*.png
+!**/*.csv
+!**/Dockerfile
+!**/Makefile
+!**/README.md
+!/Makefile
+!/README.md
+!/*.drawio
+!/.gitignore
+
+# 特定のディレクトリを無視から除外
+!/
+!/include
+!/src
+!/src/*
+!/gnuscript
+!/gnuscript/*
+!/out
+!/out/*
+!/data
+!/data/*s
