@@ -6,9 +6,12 @@
 !**/*.hpp
 !**/*.tpp
 !**/*.ipp
+!**/*.pdf
 !**/*.gnu
 !**/*.png
 !**/*.csv
+!**/*.py
+!**/*.txt
 !**/Dockerfile
 !**/Makefile
 !**/README.md
@@ -19,12 +22,15 @@
 
 # 特定のディレクトリを無視から除外
 !/
-!/include
-!/src
+!/cProgram
+!/python
+!/python/denba
+!/**/include
+!/**/src
 !/src/*
-!/gnuscript
-!/gnuscript/*
-!/out
-!/out/*
-!/data
-!/data/*s
+!/**/gnuscript
+!/**/gnuscript/*
+!/**/out
+!/**/out/*
+!/**/data
+!/**/data/*s
