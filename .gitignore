@@ -12,7 +12,7 @@
 !**/*.csv
 !**/*.py
 !**/*.txt
-!**/Dockerfile
+!**/dockerfile
 !**/Makefile
 !**/README.md
 !/Makefile
@@ -24,7 +24,8 @@
 !/
 !/cProgram
 !/python
-!/python/denba
+!/python/*
+!/openEMS
 !/**/include
 !/**/src
 !/src/*

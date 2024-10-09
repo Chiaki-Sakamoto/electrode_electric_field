@@ -1,0 +1,21 @@
+# Base image from Arch Linux
+FROM archlinux:latest
+
+# Install necessary packages including openEMS and its dependencies
+RUN pacman -Syu --noconfirm \
+    && pacman -S --noconfirm base-devel git cmake boost hdf5 fftw \
+    && pacman -S --noconfirm python python-numpy python-matplotlib \
+    && pacman -S --noconfirm --needed gcc-fortran \
+    && pacman -S --noconfirm vtk vtk-mesa openmpi \
+    && git clone https://github.com/thliebig/openEMS-Project.git /openEMS-Project \
+    && cd /openEMS-Project \
+    && mkdir -p build && cd build \
+    && cmake .. \
+    && make -j$(nproc) \
+    && make install
+
+# Set the default working directory to /app
+WORKDIR /app
+
+# Command to run when the container starts
+CMD ["/bin/bash"]

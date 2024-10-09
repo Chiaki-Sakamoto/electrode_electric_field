@@ -97,7 +97,7 @@ class Main():
         # plt.xlim(50,60)
         # plt.ylim(50,60)
         plt.show()
-    
+
     def Math_single(self):  # single coreでの計算．基本 multi core で計算する
         n = 0
         t1 = time.time()
@@ -131,7 +131,7 @@ class Main():
                 pre_phi = self.phi[i, j]  # 1 つ前の計算結果
                 phi[i, j] = self.omega * 0.25 * (self.rho[i, j]*self.dz**2/self.e0+phi[i+1, j]+phi[i-1, j]+phi[i, j+1]+phi[i, j-1]) + pre_phi - self.omega*pre_phi  # 差分化ポアソン方程式の計算． 収束を早めるために加速係数 omega をかけている．収束したら omega = 1 にして再び計算する．
         return phi  # 計算結果を返す
-    
+
     def Math_lower_left(self, phi):  # multi core での計算．左下の領域
         for i in self.z[self.center[0]:-1]:  # 計算領域．左半分
             for j in self.x[1:self.center[1]]:  # 計算領域．下半分
@@ -147,11 +147,11 @@ class Main():
                 pre_phi = phi[i, j]
                 phi[i, j] = self.omega * 0.25 * (self.rho[i, j]*self.dz**2/self.e0+phi[i+1, j]+phi[i-1, j]+phi[i, j+1]+phi[i, j-1]) + pre_phi - self.omega*pre_phi  # 差分化ポアソン方程式の計算． 収束を早めるために加速係数 omega をかけている．収束したら omega = 1 にして再び計算する．
         return phi
-    
-    def Math_lower_right(self,phi): # multi core での計算．右下の領域
+
+    def Math_lower_right(self, phi): # multi core での計算．右下の領域
         for i in self.z[self.center[0]:-1]: # 計算領域．右半分
             for j in self.x[self.center[1]:-1]: # 計算領域．下半分
-                #if(self.den[i,j] == 0):
+                # if(self.den[i,j] == 0):
                 pre_phi = phi[i,j]
                 phi[i,j] = self.omega * 0.25 * (self.rho[i,j]*self.dz**2/self.e0+phi[i+1,j]+phi[i-1,j]+phi[i,j+1]+phi[i,j-1]) + pre_phi - self.omega*pre_phi # 差分化ポアソン方程式の計算． 収束を早めるために加速係数 omega をかけている．収束したら omega = 1 にして再び計算する．
         return phi
@@ -183,7 +183,7 @@ class Main():
                 # self.phi[1:-1,1:-1] = np.where(self.den[1:-1,1:-1] == 0,(phi[2:,1:-1]+phi[:-2,1:-1]+phi[1:-1,2:]+phi[1:-1,:-2])+(1-self.omega)*phi[1:-1,1:-1],self.voltage_laser)
                 phi_max = np.max(abs(self.phi))  # 電極間での電位の最大値を代入
                 CurErr = abs(self.phi-phi) / phi_max  # 1つ前の計算との誤差を代入．0で割らないために最大値を用いて誤差率を出している
-                CurErr_max = np.max(CurErr) # 誤差率の最大値を取得
+                CurErr_max = np.max(CurErr)  # 誤差率の最大値を取得
                 if (CurErr_max < self.conv/10):  # 誤差率が指定した値の 1/10 になったら
                     self.omega = 1  # 加速係数を 1 にする．
                     print("omega=1")

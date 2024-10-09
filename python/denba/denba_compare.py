@@ -92,7 +92,7 @@ x = np.arange(0, 201, 1)
 z = np.arange(0, 201, 1)
 fig, ax = plt.subplots(1, figsize=(7, 7))
 im = plt.imshow(Ez, cmap="seismic")  # ,vmax = 1e-8,vmin = -1e-8)
-streamplot(z, x, Ez, Ex, color='k')
+streamplot(z, x, Ez, Ex, color='blue', broken_streamlines=False, density=0.3, zorder=0)
 # ,t(z.shape[0])-1)/20)+1,10))
 ax.tick_params(axis="both", width=1.5, size=20, labelsize=20, direction="in", top=True, right=True)  # 主目盛り．
 ax.minorticks_on()
