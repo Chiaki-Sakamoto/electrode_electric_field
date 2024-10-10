@@ -1,3 +1,3 @@
 if __name__ == '__main__':
-    from .electrode_electric_field import main
+    from .main import main
     main()

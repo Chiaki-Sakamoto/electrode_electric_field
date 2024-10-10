@@ -11,6 +11,7 @@
 !**/*.png
 !**/*.csv
 !**/*.py
+!**/matplotlibrc
 !**/*.txt
 !**/dockerfile
 !**/Makefile
@@ -24,14 +25,14 @@
 !/
 !/cProgram
 !/python
-!/python/*
+!/python/*/
 !/openEMS
 !/**/include
 !/**/src
-!/src/*
+!/src/*/
 !/**/gnuscript
-!/**/gnuscript/*
+!/**/gnuscript/*/
 !/**/out
-!/**/out/*
+!/**/out/*/
 !/**/data
 !/**/data/*s

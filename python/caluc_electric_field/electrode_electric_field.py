@@ -1,12 +1,10 @@
 import numpy as np
-import os
-# import matplotlib as plt
 from abc import ABC, abstractmethod
 
 
 class ACalcuE(ABC):
     _epsilon0 = 8.85 * 10 ** -12
-    _measurementError = 1.0 * 10 ** -6
+    _measurementError = 1.0 * 10 ** -7
 
     def __init__(self, number) -> None:
         self._number = number
@@ -25,33 +23,33 @@ class ACalcuE(ABC):
         return self._number
 
     @abstractmethod
-    def executeCulc(void):
+    def executeCulc(void) -> None:
         return
 
 
 class CalcuEField(ACalcuE):
-    def __init__(self, area, number, EChargeDensityDArray) -> None:
+    def __init__(self, area, number, EPotentialDArray) -> None:
         super().__init__(number)
         self._area = area
         self._delta = area / number
-        self._EChargeDensityDArray = EChargeDensityDArray
-        self._EFieldx = np.zeros((100, 100))
-        self._EFieldy = np.zeros((100, 100))
+        self._EPotentialDArray = EPotentialDArray
+        self._EFieldx = np.zeros((number, number))
+        self._EFieldy = np.zeros((number, number))
         return
 
     def __del__(self) -> None:
         return
 
-    def executeCulc(self):
+    def executeCulc(self) -> None:
         for i in range(1, super().getNumber() - 1):
             for j in range(1, super().getNumber() - 1):
                 self._EFieldx[i][j] = - (
-                    self._EChargeDensityDArray[i + 1][j]
-                    - self._EChargeDensityDArray[i - 1][j]
+                    self._EPotentialDArray[i + 1][j]
+                    - self._EPotentialDArray[i - 1][j]
                 ) / (2.0 * self._delta)
-                self._EFieldy[i][j] = -(
-                    self._EChargeDensityDArray[i][j + 1]
-                    - self._EChargeDensityDArray[i][j - 1]
+                self._EFieldy[i][j] = - (
+                    self._EPotentialDArray[i][j + 1]
+                    - self._EPotentialDArray[i][j - 1]
                 ) / (2.0 * self._delta)
         return
 
@@ -77,7 +75,7 @@ class CalcuEPotential(ACalcuE):
     def __del__(self) -> None:
         return
 
-    def executeCulc(self):
+    def __singleCoreCulc(self) -> None:
         index = 0
         maxEPotential = 1.0 * 10 ** -10
         maxError = 0.0
@@ -97,8 +95,8 @@ class CalcuEPotential(ACalcuE):
                         / super().getEpsilon0()
                         + self._EPotentialDArray[i + 1][j]
                         + self._EPotentialDArray[i - 1][j]
-                        + self._EChargeDensityDArray[i][j + 1]
-                        + self._EChargeDensityDArray[i][j - 1]
+                        + self._EPotentialDArray[i][j + 1]
+                        + self._EPotentialDArray[i][j - 1]
                     )
                     if (maxEPotential < abs(self._EPotentialDArray[i][j])):
                         maxEPotential = self._EPotentialDArray[i][j]
@@ -110,6 +108,14 @@ class CalcuEPotential(ACalcuE):
             index += 1
             if (maxError <= super().getMeasurementError()):
                 break
+        print("")
+        return
+
+    def __multiCoreCulc(self):
+        return
+
+    def executeCulc(self) -> None:
+        self.__singleCoreCulc()
         return
 
 
@@ -125,48 +131,3 @@ def makeChargeDensityDArray(number, delta, radius, chargeDensity):
             ):
                 chargeDensityDArray[i][j] = chargeDensity
     return chargeDensityDArray
-
-
-def makeDirectory(path):
-    try:
-        os.makedirs(path)
-    except FileExistsError:
-        print("\033[38;5;220mdata directory exist.\033[0m\n")
-    return
-
-
-def outputCulc(path, ePotentialDArray, EFieldx, EFieldy):
-    np.savetxt(path+"/electricPotential.csv", ePotentialDArray, delimiter=",")
-    np.savetxt(path+"/Ex.csv", EFieldx, delimiter=",")
-    np.savetxt(path+"/Ey.csv", EFieldy, delimiter=",")
-    return
-
-
-def main():
-    size = 0.1
-    number = 100
-    delta = size / number
-    chargeDensity = 1.0 * 10 ** -8
-    path = "./data"
-
-    EPotential = CalcuEPotential(
-        size,
-        number,
-        chargeDensity,
-        makeChargeDensityDArray(number, delta, 0.005, chargeDensity)
-    )
-    EPotential.executeCulc()
-    EField = CalcuEField(
-        size,
-        number,
-        EPotential._EPotentialDArray
-    )
-    EField.executeCulc()
-    makeDirectory(path)
-    outputCulc(
-        path,
-        EPotential._EPotentialDArray,
-        EField._EFieldx,
-        EField._EFieldy
-    )
-    return (os.EX_OK)
