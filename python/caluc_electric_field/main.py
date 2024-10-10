@@ -2,9 +2,9 @@ import os
 import numpy as np
 import argparse
 import time
-from .electrode_electric_field import CalcuEField
-from .electrode_electric_field import CalcuEPotential
-from .electrode_electric_field import makeChargeDensityDArray
+from .electrodeElectricField import CalcuEField
+from .electrodeElectricField import CalcuEPotential
+from .setChargeDensity import makeChargeDensityDArray
 
 
 def makeDirectory(path):
@@ -15,10 +15,20 @@ def makeDirectory(path):
     return
 
 
-def outputCulc(path, ePotentialDArray, EFieldx, EFieldy):
-    np.savetxt(path+"/electricPotential.csv", ePotentialDArray, delimiter=",")
-    np.savetxt(path+"/Ex.csv", EFieldx, delimiter=",")
-    np.savetxt(path+"/Ey.csv", EFieldy, delimiter=",")
+def outputCulc(path, eChargeDensityDArray, ePotentialDArray, EFieldx, EFieldy):
+    np.savetxt(
+        path + "/chargeDensity.csv",
+        eChargeDensityDArray,
+        delimiter=","
+    )
+    np.savetxt(
+        path + "/electricPotential.csv",
+        ePotentialDArray,
+        delimiter=","
+    )
+    np.savetxt(path + "/Ex.csv", EFieldx, delimiter=",")
+    np.savetxt(path + "/Ey.csv", EFieldy, delimiter=",")
+
     return
 
 
@@ -30,7 +40,12 @@ def main():
     parse = argparse.ArgumentParser(
         description="fuck"
     )
-    parse.add_argument("directory_path", help="directory path")
+    parse.add_argument(
+        "directory_path",
+        help="directory path",
+        default="./data/"
+    )
+    args = parse.parse_args()
     startTime = time.time()
 
     EPotential = CalcuEPotential(
@@ -46,9 +61,10 @@ def main():
         EPotential._EPotentialDArray
     )
     EField.executeCulc()
-    makeDirectory(parse.directory_path)
+    makeDirectory(args.directory_path)
     outputCulc(
-        parse.directory_path,
+        args.directory_path,
+        EPotential._EChargeDensityDArray,
         EPotential._EPotentialDArray,
         EField._EFieldx,
         EField._EFieldy
