@@ -23,16 +23,18 @@
 
 # 特定のディレクトリを無視から除外
 !/
+!/denba
+!/denva/**/
 !/cProgram
 !/python
-!/python/*/
+!/python/**/
 !/openEMS
 !/**/include
 !/**/src
-!/src/*/
+!/src/**/
 !/**/gnuscript
-!/**/gnuscript/*/
+!/**/gnuscript/**/
 !/**/out
-!/**/out/*/
+!/**/out/**/
 !/**/data
 !/**/data/*s

@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 
 class ACalcuE(ABC):
     _epsilon0 = 8.85 * 10 ** -12
-    _measurementError = 1.0 * 10 ** -7
+    _measurementError = 1.0 * 10 ** -6
 
     def __init__(self, number) -> None:
         self._number = number
@@ -44,12 +44,12 @@ class CalcuEField(ACalcuE):
         for i in range(1, super().getNumber() - 1):
             for j in range(1, super().getNumber() - 1):
                 self._EFieldx[i][j] = - (
-                    self._EPotentialDArray[i + 1][j]
-                    - self._EPotentialDArray[i - 1][j]
-                ) / (2.0 * self._delta)
-                self._EFieldy[i][j] = - (
                     self._EPotentialDArray[i][j + 1]
                     - self._EPotentialDArray[i][j - 1]
+                ) / (2.0 * self._delta)
+                self._EFieldy[i][j] = - (
+                    self._EPotentialDArray[i + 1][j]
+                    - self._EPotentialDArray[i - 1][j]
                 ) / (2.0 * self._delta)
         return
 

@@ -1,10 +1,9 @@
 import numpy as np
 
 
-def halfOfElectrode(a, b, number, delta, chargeDensity):
+def makeElectrodeFacingSemicircle(a, b, number, delta, chargeDensity):
     chargeDensityDArray = np.zeros((number, number))
     length = len(chargeDensityDArray)
-    sdelta = delta ** 2
 
     for y in range(length):
         for x in range(length):
@@ -17,7 +16,21 @@ def halfOfElectrode(a, b, number, delta, chargeDensity):
                     x * delta >= (a + 20) / 1000
                     and x * delta <= (a + 24.7) / 1000
                 )
-                and ((a - x) ** 2 + (b - y) ** 2) * sdelta <= 0.025 ** 2
+                and (a / 1000 - x * delta) ** 2 + (b / 1000 - y * delta) ** 2
+                <= 0.025 ** 2
+            ):
+                chargeDensityDArray[y][x] = chargeDensity
+            if (
+                (
+                    y * delta >= (b + 3.75) / 1000
+                    or y * delta <= (b - 3.75) / 1000
+                ) and
+                (
+                    x * delta >= (a + 29.7) / 1000
+                    and x * delta <= (a + 34.4) / 1000
+                )
+                and ((a + 54.4) / 1000 - x * delta) ** 2
+                + (b / 1000 - y * delta) ** 2 <= 0.025 ** 2
             ):
                 chargeDensityDArray[y][x] = chargeDensity
     return chargeDensityDArray
