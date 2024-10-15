@@ -17,7 +17,7 @@
 |graph.py|python直下で<br>python3 ./graph.py \<data directory\> -option>|
 
 > [!TIP]
-> **Detailed running instructions**
+> **Detailed running instructions** <br>
 > python3 -m caluc_electric_field -h <br>
 > python3 ./graph.py -h
 
