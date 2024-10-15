@@ -26,3 +26,5 @@
 
 # related
 - Poisson equation
+- matplotlib
+- numpy
