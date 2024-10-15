@@ -22,4 +22,7 @@
 > python3 ./graph.py -h
 
 # requirement
- - find the electric field
+- find the electric field
+
+# related
+- Poisson equation
