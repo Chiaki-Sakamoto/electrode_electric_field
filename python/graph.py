@@ -151,9 +151,9 @@ def makeDirectory(path):
     return
 
 
-def _testShowChargeDensity(a, b, path) -> None:
+def _testShowChargeDensity(a, b, path, dpi) -> None:
     size = 0.1  # 0.1 m
-    number = 200
+    number = int(dpi)
     delta = size / number
     chargeDensity = 1.0 * 10 ** -8
 
@@ -185,6 +185,12 @@ parser.add_argument("-ex", "--electric_field_x", action="store_true")
 parser.add_argument("-ey", "--electric_field_y", action="store_true")
 parser.add_argument("-cd", "--charge_density", action="store_true")
 parser.add_argument("-lef", "--line_of_electric_force", action="store_true")
+parser.add_argument(
+    "-dpi",
+    "--dotsPerInch",
+    help="dots per inch",
+    default=200
+)
 args = parser.parse_args()
 
 if (args.charge_density and not args.test):
@@ -198,4 +204,4 @@ if (args.electric_field_x):
 if (args.electric_field_y):
     showEFieldy(args.data_path + "/Ey.csv")
 if (args.charge_density and args.test):
-    _testShowChargeDensity(0.022, 0.05, args.data_path)
+    _testShowChargeDensity(0.022, 0.05, args.data_path, args.dotsPerInch)
