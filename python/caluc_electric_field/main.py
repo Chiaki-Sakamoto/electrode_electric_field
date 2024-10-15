@@ -34,10 +34,6 @@ def outputCulc(path, eChargeDensityDArray, ePotentialDArray, EFieldx, EFieldy):
 
 
 def main():
-    size = 0.1  # 0.1 m
-    number = 300
-    delta = size / number
-    chargeDensity = 1.0 * 10 ** -8
     parse = argparse.ArgumentParser(
         description="fuck"
     )
@@ -46,7 +42,17 @@ def main():
         help="directory path",
         default="./data/"
     )
+    parse.add_argument(
+        "-dpi",
+        "--dotsPerInch",
+        help="dots per inch",
+        default=200
+    )
     args = parse.parse_args()
+    size = 0.1  # 0.1 m
+    number = int(args.dotsPerInch)
+    delta = size / number
+    chargeDensity = 1.0 * 10 ** -8
     startTime = time.time()
 
     EPotential = CalcuEPotential(

@@ -2,7 +2,7 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 import argparse
-from setChargeDensity import makeElectrodeFacingSemicircle
+from caluc_electric_field.setChargeDensity import makeElectrodeFacingSemicircle
 
 
 def showEPotential(path) -> None:

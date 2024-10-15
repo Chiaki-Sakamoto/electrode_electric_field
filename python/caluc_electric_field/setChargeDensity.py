@@ -26,25 +26,6 @@ def makeElectrodeFacingSemicircle(a, b, number, delta, chargeDensity):
                 <= 0.025 ** 2
             ):
                 chargeDensityDArray[y][x] = chargeDensity
-            # if (
-            #     (
-            #         y * delta >= b + 0.00375
-            #         or y * delta <= b - 0.00375
-            #     ) and
-            #     (
-            #         x * delta >= a + 0.0297
-            #         and x * delta <= a + 0.0344
-            #     ) and
-            #     (
-            #         y * delta - b >=
-            #         (6.55 / 4.7) * (x * delta - a) - (8738 / 235000)
-            #         or y * delta - b <=
-            #         - (6.55 / 4.7) * (x * delta - a) + (8738 / 235000)
-            #     )
-            #     and ((a + 0.0544) - x * delta) ** 2
-            #     + (b - y * delta) ** 2 <= 0.025 ** 2
-            # ):
-            #     chargeDensityDArray[y][x] = 0
     return chargeDensityDArray
 
 
@@ -56,21 +37,21 @@ def groundElectrodeSemicircular(a, b, number, delta):
         for x in range(length):
             if (
                 (
-                    y * delta >= b + 0.00375
-                    or y * delta <= b - 0.00375
+                    y * delta > b + 0.00375
+                    or y * delta < b - 0.00375
                 ) and
                 (
-                    x * delta >= a + 0.0297
-                    and x * delta <= a + 0.0344
+                    x * delta > a + 0.0297
+                    and x * delta < a + 0.0344
                 ) and
                 (
-                    y * delta - b >=
+                    y * delta - b >
                     (6.55 / 4.7) * (x * delta - a) - (8738 / 235000)
-                    or y * delta - b <=
+                    or y * delta - b <
                     - (6.55 / 4.7) * (x * delta - a) + (8738 / 235000)
                 )
                 and ((a + 0.0544) - x * delta) ** 2
-                + (b - y * delta) ** 2 <= 0.025 ** 2
+                + (b - y * delta) ** 2 < 0.025 ** 2
             ):
                 groundElectrodeDArray[y][x] = 1
     return groundElectrodeDArray
