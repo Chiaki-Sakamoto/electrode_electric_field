@@ -5,6 +5,7 @@ import time
 from .electrodeElectricField import CalcuEField
 from .electrodeElectricField import CalcuEPotential
 from .setChargeDensity import makeElectrodeFacingSemicircle
+from .setChargeDensity import groundElectrodeSemicircular
 
 
 def makeDirectory(path):
@@ -34,7 +35,7 @@ def outputCulc(path, eChargeDensityDArray, ePotentialDArray, EFieldx, EFieldy):
 
 def main():
     size = 0.1  # 0.1 m
-    number = 401
+    number = 300
     delta = size / number
     chargeDensity = 1.0 * 10 ** -8
     parse = argparse.ArgumentParser(
@@ -52,7 +53,14 @@ def main():
         size,
         number,
         chargeDensity,
-        makeElectrodeFacingSemicircle(22, 50, number, delta, chargeDensity)
+        makeElectrodeFacingSemicircle(
+            0.022,
+            0.050,
+            number,
+            delta,
+            chargeDensity
+        ),
+        groundElectrodeSemicircular(0.022, 0.050, number, delta)
     )
     EPotential.executeCulc()
     EField = CalcuEField(

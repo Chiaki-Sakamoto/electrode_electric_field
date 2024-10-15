@@ -9,31 +9,76 @@ def makeElectrodeFacingSemicircle(a, b, number, delta, chargeDensity):
         for x in range(length):
             if (
                 (
-                    y * delta >= (b + 3.75) / 1000
-                    or y * delta <= (b - 3.75) / 1000
+                    y * delta >= b + 0.00375
+                    or y * delta <= b - 0.00375
                 ) and
                 (
-                    x * delta >= (a + 20) / 1000
-                    and x * delta <= (a + 24.7) / 1000
-                )
-                and (a / 1000 - x * delta) ** 2 + (b / 1000 - y * delta) ** 2
+                    x * delta >= a + 0.020
+                    and x * delta <= a + 0.0247
+                ) and
+                (
+                    y * delta - b >=
+                    - (6.55 / 4.7) * (x * delta - a) + (8853 / 235000)
+                    or y * delta - b <=
+                    (6.55 / 4.7) * (x * delta - a) - (8853 / 235000)
+                ) and
+                (a - x * delta) ** 2 + (b - y * delta) ** 2
                 <= 0.025 ** 2
             ):
                 chargeDensityDArray[y][x] = chargeDensity
+            # if (
+            #     (
+            #         y * delta >= b + 0.00375
+            #         or y * delta <= b - 0.00375
+            #     ) and
+            #     (
+            #         x * delta >= a + 0.0297
+            #         and x * delta <= a + 0.0344
+            #     ) and
+            #     (
+            #         y * delta - b >=
+            #         (6.55 / 4.7) * (x * delta - a) - (8738 / 235000)
+            #         or y * delta - b <=
+            #         - (6.55 / 4.7) * (x * delta - a) + (8738 / 235000)
+            #     )
+            #     and ((a + 0.0544) - x * delta) ** 2
+            #     + (b - y * delta) ** 2 <= 0.025 ** 2
+            # ):
+            #     chargeDensityDArray[y][x] = 0
+    return chargeDensityDArray
+
+
+def groundElectrodeSemicircular(a, b, number, delta):
+    groundElectrodeDArray = np.zeros((number, number))
+    length = len(groundElectrodeDArray)
+
+    for y in range(length):
+        for x in range(length):
             if (
                 (
-                    y * delta >= (b + 3.75) / 1000
-                    or y * delta <= (b - 3.75) / 1000
+                    y * delta >= b + 0.00375
+                    or y * delta <= b - 0.00375
                 ) and
                 (
-                    x * delta >= (a + 29.7) / 1000
-                    and x * delta <= (a + 34.4) / 1000
+                    x * delta >= a + 0.0297
+                    and x * delta <= a + 0.0344
+                ) and
+                (
+                    y * delta - b >=
+                    (6.55 / 4.7) * (x * delta - a) - (8738 / 235000)
+                    or y * delta - b <=
+                    - (6.55 / 4.7) * (x * delta - a) + (8738 / 235000)
                 )
-                and ((a + 54.4) / 1000 - x * delta) ** 2
-                + (b / 1000 - y * delta) ** 2 <= 0.025 ** 2
+                and ((a + 0.0544) - x * delta) ** 2
+                + (b - y * delta) ** 2 <= 0.025 ** 2
             ):
-                chargeDensityDArray[y][x] = chargeDensity
-    return chargeDensityDArray
+                groundElectrodeDArray[y][x] = 1
+    return groundElectrodeDArray
+
+
+def noGroundElectrode(a, b, number, delta):
+    groundElectrodeDArray = np.zeros((number, number))
+    return groundElectrodeDArray
 
 
 def makeChargeDensityDArray(number, delta, radius, chargeDensity):

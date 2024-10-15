@@ -62,7 +62,8 @@ class CalcuEPotential(ACalcuE):
         area,
         number,
         chargeDensity,
-        chargeDensityDArray
+        chargeDensityDArray,
+        groundElectrodeDArray,
     ) -> None:
         super().__init__(number)
         self._area = area
@@ -70,6 +71,7 @@ class CalcuEPotential(ACalcuE):
         self._maxEPotential = chargeDensity
         self._EChargeDensityDArray = chargeDensityDArray
         self._EPotentialDArray = np.zeros((number, number))
+        self._groundElectrodeDArray = groundElectrodeDArray
         return
 
     def __del__(self) -> None:
@@ -89,22 +91,23 @@ class CalcuEPotential(ACalcuE):
                 print("\033[38;5;87m\rloop: ", index, "\033[0m", end="")
             for i in range(1, super().getNumber() - 1):
                 for j in range(1, super().getNumber() - 1):
-                    prevEPotential = self._EPotentialDArray[i][j]
-                    self._EPotentialDArray[i][j] = 0.25 * (
-                        self._EChargeDensityDArray[i][j] * sDelta
-                        / super().getEpsilon0()
-                        + self._EPotentialDArray[i + 1][j]
-                        + self._EPotentialDArray[i - 1][j]
-                        + self._EPotentialDArray[i][j + 1]
-                        + self._EPotentialDArray[i][j - 1]
-                    )
-                    if (maxEPotential < abs(self._EPotentialDArray[i][j])):
-                        maxEPotential = self._EPotentialDArray[i][j]
-                    curError = (
-                        abs(self._EPotentialDArray[i][j] - prevEPotential)
-                    ) / maxEPotential
-                    if (maxError < curError):
-                        maxError = curError
+                    if (self._groundElectrodeDArray[i][j] == 0):
+                        prevEPotential = self._EPotentialDArray[i][j]
+                        self._EPotentialDArray[i][j] = 0.25 * (
+                            self._EChargeDensityDArray[i][j] * sDelta
+                            / super().getEpsilon0()
+                            + self._EPotentialDArray[i + 1][j]
+                            + self._EPotentialDArray[i - 1][j]
+                            + self._EPotentialDArray[i][j + 1]
+                            + self._EPotentialDArray[i][j - 1]
+                        )
+                        if (maxEPotential < abs(self._EPotentialDArray[i][j])):
+                            maxEPotential = self._EPotentialDArray[i][j]
+                        curError = (
+                            abs(self._EPotentialDArray[i][j] - prevEPotential)
+                        ) / maxEPotential
+                        if (maxError < curError):
+                            maxError = curError
             index += 1
             if (maxError <= super().getMeasurementError()):
                 break

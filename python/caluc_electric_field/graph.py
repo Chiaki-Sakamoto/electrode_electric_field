@@ -53,7 +53,7 @@ def showElectricChargeDensity(path) -> None:
     return
 
 
-def showEField(path) -> None:
+def showEField(path, lineFlag) -> None:
     try:
         Ex = np.loadtxt(path + "/Ex.csv", delimiter=',')
         Ey = np.loadtxt(path + "/Ey.csv", delimiter=',')
@@ -80,15 +80,16 @@ def showEField(path) -> None:
     ax.set_xlabel("x [mm]")
     ax.set_ylabel("y [mm]")
     ax.invert_yaxis()
-    # ax.streamplot(
-    #     np.arange(0, length, 1),
-    #     np.arange(0, length, 1),
-    #     Ex,
-    #     Ey,
-    #     color='blue',
-    #     broken_streamlines=False,
-    #     density=0.3
-    # )
+    if (lineFlag):
+        ax.streamplot(
+            np.arange(0, length, 1),
+            np.arange(0, length, 1),
+            Ex,
+            Ey,
+            color='blue',
+            broken_streamlines=False,
+            density=0.3
+        )
     ax.set_title("Electric Field")
     plt.show()
     return
@@ -152,7 +153,7 @@ def makeDirectory(path):
 
 def _testShowChargeDensity(a, b, path) -> None:
     size = 0.1  # 0.1 m
-    number = 401
+    number = 200
     delta = size / number
     chargeDensity = 1.0 * 10 ** -8
 
@@ -183,6 +184,7 @@ parser.add_argument("-ef", "--electric_field", action="store_true")
 parser.add_argument("-ex", "--electric_field_x", action="store_true")
 parser.add_argument("-ey", "--electric_field_y", action="store_true")
 parser.add_argument("-cd", "--charge_density", action="store_true")
+parser.add_argument("-lef", "--line_of_electric_force", action="store_true")
 args = parser.parse_args()
 
 if (args.charge_density and not args.test):
@@ -190,10 +192,10 @@ if (args.charge_density and not args.test):
 if (args.electric_potential):
     showEPotential(args.data_path + "/electricPotential.csv")
 if (args.electric_field):
-    showEField(args.data_path)
+    showEField(args.data_path, args.line_of_electric_force)
 if (args.electric_field_x):
     showEFieldx(args.data_path + "/Ex.csv")
 if (args.electric_field_y):
     showEFieldy(args.data_path + "/Ey.csv")
 if (args.charge_density and args.test):
-    _testShowChargeDensity(22, 50, args.data_path)
+    _testShowChargeDensity(0.022, 0.05, args.data_path)
