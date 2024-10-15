@@ -18,7 +18,7 @@
 
 > [!TIP]
 > **Detailed running instructions**
-> python3 -m caluc_electric_field -h
+> python3 -m caluc_electric_field -h <br>
 > python3 ./graph.py -h
 
 # requirement
