@@ -23,12 +23,12 @@
 
 # 特定のディレクトリを無視から除外
 !/
-!/denba
-!/denva/**/
-!/cProgram
+# !/denba
+# !/denva/**/
+# !/cProgram
 !/python
 !/python/**/
-!/openEMS
+# !/openEMS
 !/**/include
 !/**/src
 !/src/**/
