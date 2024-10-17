@@ -49,7 +49,7 @@ def main():
         default=200
     )
     args = parse.parse_args()
-    size = 0.1  # 0.1 m
+    size = 0.08  # 0.1 m
     number = int(args.dotsPerInch)
     delta = size / number
     chargeDensity = 1.0 * 10 ** -8
