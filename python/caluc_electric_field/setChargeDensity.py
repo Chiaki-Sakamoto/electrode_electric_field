@@ -57,8 +57,48 @@ def groundElectrodeSemicircular(a, b, number, delta):
     return groundElectrodeDArray
 
 
-def noGroundElectrode(a, b, number, delta):
+def noGroundElectrode(number):
     groundElectrodeDArray = np.zeros((number, number))
+    return groundElectrodeDArray
+
+
+def makeCircularElectrode(a, b, number, delta, chargeDensity):
+    chargeDensityDArray = np.zeros((number, number))
+    length = len(chargeDensityDArray)
+
+    for y in range(length):
+        for x in range(length):
+            if (
+                (
+                    a <= x * delta and x * delta <= a + 0.004
+                ) and (
+                    b - 0.015 <= y * delta and y * delta <= b + 0.015
+                ) and (
+                    y * delta - b >= -0.6875 * (x * delta - a) + 0.0065
+                    or y * delta - b <= 0.6875 * (x * delta - a) - 0.0065
+                )
+            ):
+                chargeDensityDArray[y][x] = chargeDensity
+    return chargeDensityDArray
+
+
+def groundCircleElectrode(a, b, number, delta):
+    groundElectrodeDArray = np.zeros((number, number))
+    length = len(groundElectrodeDArray)
+
+    for y in range(length):
+        for x in range(length):
+            if (
+                (
+                    a + 0.009 <= x * delta and x * delta <= a + 0.013
+                ) and (
+                    b - 0.015 <= y * delta and y * delta <= b + 0.015
+                ) and (
+                    y * delta - b >= 0.6875 * (x * delta - a) - 0.0024375
+                    or y * delta - b <= -0.6875 * (x * delta - a) + 0.0024375
+                )
+            ):
+                groundElectrodeDArray[y][x] = 1
     return groundElectrodeDArray
 
 

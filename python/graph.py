@@ -1,8 +1,9 @@
 import numpy as np
-import os
 import matplotlib.pyplot as plt
 import argparse
 from caluc_electric_field.setChargeDensity import makeElectrodeFacingSemicircle
+from caluc_electric_field.setChargeDensity import makeCircularElectrode
+from utils.file import makeDirectory
 
 
 def showEPotential(path) -> None:
@@ -13,6 +14,7 @@ def showEPotential(path) -> None:
         return
     fig, ax = plt.subplots()
 
+    print(EPotential.max(), end="")
     fig.colorbar(
         ax.imshow(
             EPotential,
@@ -23,7 +25,6 @@ def showEPotential(path) -> None:
     ).set_label("Electric Potential [V]")
     ax.set_xlabel("x [mm]")
     ax.set_ylabel("y [mm]")
-    ax.invert_yaxis()
     ax.set_title("Electric Potential")
     plt.show()
     return
@@ -44,10 +45,9 @@ def showElectricChargeDensity(path) -> None:
             cmap='viridis',
             interpolation='none'
         )
-    ).set_label("Electric Charge Density [C/m^2]")
+    ).set_label("Electric Charge Density [C/m\u00B2]")
     ax.set_xlabel("x [mm]")
     ax.set_ylabel("y [mm]")
-    ax.invert_yaxis()
     ax.set_title("Electric Charge Density")
     plt.show()
     return
@@ -79,7 +79,7 @@ def showEField(path, lineFlag) -> None:
     ).set_label("Electric Field [V/m]")
     ax.set_xlabel("x [mm]")
     ax.set_ylabel("y [mm]")
-    ax.invert_yaxis()
+    # ax.invert_yaxis()
     if (lineFlag):
         ax.streamplot(
             np.arange(0, length, 1),
@@ -113,7 +113,7 @@ def showEFieldx(path) -> None:
     ).set_label("Electric field [V/m]")
     ax.set_xlabel("x [mm]")
     ax.set_ylabel("y [mm]")
-    ax.invert_yaxis()
+    # ax.invert_yaxis()
     ax.set_title("Electric Field in x direction")
     plt.show()
     return
@@ -137,17 +137,9 @@ def showEFieldy(path) -> None:
     ).set_label("Electric Field [V/m]")
     ax.set_xlabel("x [mm]")
     ax.set_ylabel("y [mm]")
-    ax.invert_yaxis()
+    # ax.invert_yaxis()
     ax.set_title("Electric Field in y direction")
     plt.show()
-    return
-
-
-def makeDirectory(path):
-    try:
-        os.makedirs(path)
-    except FileExistsError:
-        print("\033[38;5;220mdata directory exist.\033[0m")
     return
 
 
@@ -158,7 +150,7 @@ def _testShowChargeDensity(a, b, path, dpi) -> None:
     chargeDensity = 1.0 * 10 ** -8
 
     makeDirectory(path)
-    chargeDensityDArray = makeElectrodeFacingSemicircle(
+    chargeDensityDArray = makeCircularElectrode(
         a,
         b,
         number,
@@ -204,4 +196,4 @@ if (args.electric_field_x):
 if (args.electric_field_y):
     showEFieldy(args.data_path + "/Ey.csv")
 if (args.charge_density and args.test):
-    _testShowChargeDensity(0.022, 0.05, args.data_path, args.dotsPerInch)
+    _testShowChargeDensity(0.0435, 0.05, args.data_path, args.dotsPerInch)

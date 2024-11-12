@@ -4,7 +4,9 @@ import argparse
 import time
 from .electrodeElectricField import CalcuEField
 from .electrodeElectricField import CalcuEPotential
+from .setChargeDensity import makeChargeDensityDArray
 from .setChargeDensity import makeElectrodeFacingSemicircle
+from .setChargeDensity import noGroundElectrode
 from .setChargeDensity import groundElectrodeSemicircular
 
 
@@ -46,10 +48,10 @@ def main():
         "-dpi",
         "--dotsPerInch",
         help="dots per inch",
-        default=200
+        default=100
     )
     args = parse.parse_args()
-    size = 0.08  # 0.1 m
+    size = 0.1  # 0.1 m
     number = int(args.dotsPerInch)
     delta = size / number
     chargeDensity = 1.0 * 10 ** -8
@@ -59,14 +61,16 @@ def main():
         size,
         number,
         chargeDensity,
-        makeElectrodeFacingSemicircle(
-            0.022,
-            0.050,
-            number,
-            delta,
-            chargeDensity
-        ),
-        groundElectrodeSemicircular(0.022, 0.050, number, delta)
+        makeChargeDensityDArray(number, delta, 0.005, chargeDensity),
+        noGroundElectrode(number)
+        # makeElectrodeFacingSemicircle(
+        #     0.022,
+        #     0.050,
+        #     number,
+        #     delta,
+        #     chargeDensity
+        # ),
+        # groundElectrodeSemicircular(0.022, 0.050, number, delta)
     )
     EPotential.executeCulc()
     EField = CalcuEField(
